@@ -7,3 +7,23 @@ nelmio_api_doc:
     areas: # to filter documented areas
         path_patterns:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+
+# -------------- #
+# Config Example #
+# -------------- #
+
+#    sandbox:
+#        enabled: true
+#        authentication:
+#            delivery: http
+#            type: bearer
+#        body_format:
+#            formats: [ json, form ] # Array of enabled body formats,
+#            default_format: json
+#    swagger:
+#        api_base_path: /api/v1
+#        swagger_version: 1.2
+#        api_version: 1.0.0
+#        info:
+#            title: Rest
+#            description: 'Rest app in symfony 4'
