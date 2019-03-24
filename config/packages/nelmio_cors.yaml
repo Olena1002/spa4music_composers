@@ -1,4 +1,5 @@
 nelmio_cors:
+    # https://github.com/nelmio/NelmioCorsBundle#configuration
     defaults:
         origin_regex: true
         allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
