@@ -8,6 +8,7 @@
         "cocur/slugify": "^3.2",
         "friendsofsymfony/rest-bundle": "^2.5",
         "guzzlehttp/guzzle": "^6.3",
+        "jms/serializer-bundle": "^3.2",
         "nelmio/api-doc-bundle": "^3.4",
         "particle/validator": "^2.3",
         "respect/validation": "^1.1",
