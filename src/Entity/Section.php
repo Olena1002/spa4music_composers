@@ -25,9 +25,9 @@ class Section
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sections")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, )
      */
-    private $publisher_id;
+    private $publisher;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -35,7 +35,7 @@ class Section
     private $ref;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false, default)
      */
     private $position;
 

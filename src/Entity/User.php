@@ -20,34 +20,35 @@ class User
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users", cascade={"persist"})
+     * @ORM\JoinColumn(name="provider_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $provider;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=60, nullable=false)
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(name="full_name", type="string", length=50, nullable=true)
      */
-    private $full_name;
+    private $fullName;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="is_activated", type="boolean", default=0)
      */
-    private $is_activated;
+    private $isActivated;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $user_agent = [];
+    private $userAgent = [];
 
     /**
      * @ORM\Column(type="string", length=255)
