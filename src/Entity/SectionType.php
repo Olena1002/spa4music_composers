@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,6 +21,7 @@ class SectionType
     private $id;
 
     /**
+     * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=65)
      */
     private $ref;
@@ -45,16 +47,19 @@ class SectionType
     private $customData = [];
 
     /**
+     * @Gedmo\Timestampable()
      * @ORM\Column(type="datetime")
      */
     private $publishedAt;
 
     /**
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
+     * @Gedmo\Timestampable(on="uptade")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
@@ -73,6 +78,11 @@ class SectionType
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sectionTypes")
      */
     private $publisher;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $title;
 
     public function __construct()
     {
@@ -228,6 +238,18 @@ class SectionType
     public function setPublisher(?User $publisher): self
     {
         $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }

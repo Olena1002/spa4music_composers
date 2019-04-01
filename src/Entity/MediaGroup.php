@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use DateTimeInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,6 +19,7 @@ class MediaGroup
     private $id;
 
     /**
+     * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=255)
      */
     private $ref;
@@ -38,16 +40,19 @@ class MediaGroup
     private $isPublished;
 
     /**
+     * @Gedmo\Timestampable()
      * @ORM\Column(type="datetime")
      */
     private $publishedAt;
 
     /**
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
@@ -61,6 +66,11 @@ class MediaGroup
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="mediaGroups")
      */
     private $publisher;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $title;
 
     public function getId(): ?int
     {
@@ -171,6 +181,18 @@ class MediaGroup
     public function setPublisher(?User $publisher): self
     {
         $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }

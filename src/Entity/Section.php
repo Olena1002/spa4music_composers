@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -35,6 +36,7 @@ class Section
     private $publisher;
 
     /**
+     * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
     private $ref;
@@ -71,16 +73,19 @@ class Section
     private $customData = [];
 
     /**
+     * @Gedmo\Timestampable()
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
 
     /**
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
@@ -94,6 +99,11 @@ class Section
      * @ORM\ManyToMany(targetEntity="App\Entity\SectionType", inversedBy="sections")
      */
     private $sectionTypes;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $title;
 
     public function __construct()
     {
@@ -283,6 +293,18 @@ class Section
         if ($this->sectionTypes->contains($sectionType)) {
             $this->sectionTypes->removeElement($sectionType);
         }
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
