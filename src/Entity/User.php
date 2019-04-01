@@ -20,12 +20,6 @@ class User
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users", cascade={"persist"})
-     * @ORM\JoinColumn(name="provider_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $provider;
-
-    /**
      * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $email;
@@ -105,6 +99,11 @@ class User
      */
     private $mediaGroups;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="usersId")
+     */
+    private $provider;
+
     public function __construct()
     {
         $this->sections = new ArrayCollection();
@@ -113,18 +112,6 @@ class User
         $this->media = new ArrayCollection();
         $this->sectionTypes = new ArrayCollection();
         $this->mediaGroups = new ArrayCollection();
-    }
-
-    public function getProvider(): ?Provider
-    {
-        return $this->provider;
-    }
-
-    public function setProvider(?Provider $provider): self
-    {
-        $this->provider = $provider;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -429,6 +416,18 @@ class User
                 $mediaGroup->setPublisher(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProvider(): ?Provider
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(?Provider $provider): self
+    {
+        $this->provider = $provider;
 
         return $this;
     }

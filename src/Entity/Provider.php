@@ -56,7 +56,12 @@ class Provider
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="provider")
      */
-    private $users;
+    private $usersId;
+
+    public function __construct()
+    {
+        $this->usersId = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,28 +155,28 @@ class Provider
     /**
      * @return Collection|User[]
      */
-    public function getUsers(): Collection
+    public function getUsersId(): Collection
     {
-        return $this->users;
+        return $this->usersId;
     }
 
-    public function addUser(User $user): self
+    public function addUsersId(User $usersId): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setProvider($this);
+        if (!$this->usersId->contains($usersId)) {
+            $this->usersId[] = $usersId;
+            $usersId->setProvider($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUsersId(User $usersId): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
+        if ($this->usersId->contains($usersId)) {
+            $this->usersId->removeElement($usersId);
             // set the owning side to null (unless already changed)
-            if ($user->getProvider() === $this) {
-                $user->setProvider(null);
+            if ($usersId->getProvider() === $this) {
+                $usersId->setProvider(null);
             }
         }
 
