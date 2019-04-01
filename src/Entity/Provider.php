@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -56,11 +57,11 @@ class Provider
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="provider")
      */
-    private $usersId;
+    private $users;
 
     public function __construct()
     {
-        $this->usersId = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,36 +117,36 @@ class Provider
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTimeInterface
+    public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(\DateTimeInterface $deletedAt): self
+    public function setDeletedAt(DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
 
@@ -155,28 +156,28 @@ class Provider
     /**
      * @return Collection|User[]
      */
-    public function getUsersId(): Collection
+    public function getUsers(): Collection
     {
-        return $this->usersId;
+        return $this->users;
     }
 
-    public function addUsersId(User $usersId): self
+    public function addUser(User $user): self
     {
-        if (!$this->usersId->contains($usersId)) {
-            $this->usersId[] = $usersId;
-            $usersId->setProvider($this);
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setProvider($this);
         }
 
         return $this;
     }
 
-    public function removeUsersId(User $usersId): self
+    public function removeUser(User $user): self
     {
-        if ($this->usersId->contains($usersId)) {
-            $this->usersId->removeElement($usersId);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
             // set the owning side to null (unless already changed)
-            if ($usersId->getProvider() === $this) {
-                $usersId->setProvider(null);
+            if ($user->getProvider() === $this) {
+                $user->setProvider(null);
             }
         }
 
