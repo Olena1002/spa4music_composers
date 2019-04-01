@@ -26,43 +26,37 @@ class Provider
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $app_key;
+    private $appKey;
 
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $app_secret;
+    private $appSecret;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_active;
+    private $isActive;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $deleted_at;
+    private $deletedAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="provider")
      */
     private $users;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-        $this->users_ids = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -83,72 +77,72 @@ class Provider
 
     public function getAppKey(): ?string
     {
-        return $this->app_key;
+        return $this->appKey;
     }
 
-    public function setAppKey(string $app_key): self
+    public function setAppKey(string $appKey): self
     {
-        $this->app_key = $app_key;
+        $this->appKey = $appKey;
 
         return $this;
     }
 
     public function getAppSecret(): ?string
     {
-        return $this->app_secret;
+        return $this->appSecret;
     }
 
-    public function setAppSecret(string $app_secret): self
+    public function setAppSecret(string $appSecret): self
     {
-        $this->app_secret = $app_secret;
+        $this->appSecret = $appSecret;
 
         return $this;
     }
 
     public function getIsActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(bool $is_active): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getDeletedAt(): ?\DateTimeInterface
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    public function setDeletedAt(\DateTimeInterface $deleted_at): self
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
     {
-        $this->deleted_at = $deleted_at;
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }

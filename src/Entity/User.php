@@ -80,9 +80,39 @@ class User
      */
     private $sections;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MediaType", mappedBy="publisher")
+     */
+    private $mediaTypes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user")
+     */
+    private $messages;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="publisher")
+     */
+    private $media;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SectionType", mappedBy="publisher")
+     */
+    private $sectionTypes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MediaGroup", mappedBy="publisher")
+     */
+    private $mediaGroups;
+
     public function __construct()
     {
         $this->sections = new ArrayCollection();
+        $this->mediaTypes = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->media = new ArrayCollection();
+        $this->sectionTypes = new ArrayCollection();
+        $this->mediaGroups = new ArrayCollection();
     }
 
     public function getProvider(): ?Provider
@@ -242,6 +272,161 @@ class User
             // set the owning side to null (unless already changed)
             if ($section->getPublisher() === $this) {
                 $section->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MediaType[]
+     */
+    public function getMediaTypes(): Collection
+    {
+        return $this->mediaTypes;
+    }
+
+    public function addMediaType(MediaType $mediaType): self
+    {
+        if (!$this->mediaTypes->contains($mediaType)) {
+            $this->mediaTypes[] = $mediaType;
+            $mediaType->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaType(MediaType $mediaType): self
+    {
+        if ($this->mediaTypes->contains($mediaType)) {
+            $this->mediaTypes->removeElement($mediaType);
+            // set the owning side to null (unless already changed)
+            if ($mediaType->getPublisher() === $this) {
+                $mediaType->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedium(Media $medium): self
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media[] = $medium;
+            $medium->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedium(Media $medium): self
+    {
+        if ($this->media->contains($medium)) {
+            $this->media->removeElement($medium);
+            // set the owning side to null (unless already changed)
+            if ($medium->getPublisher() === $this) {
+                $medium->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SectionType[]
+     */
+    public function getSectionTypes(): Collection
+    {
+        return $this->sectionTypes;
+    }
+
+    public function addSectionType(SectionType $sectionType): self
+    {
+        if (!$this->sectionTypes->contains($sectionType)) {
+            $this->sectionTypes[] = $sectionType;
+            $sectionType->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSectionType(SectionType $sectionType): self
+    {
+        if ($this->sectionTypes->contains($sectionType)) {
+            $this->sectionTypes->removeElement($sectionType);
+            // set the owning side to null (unless already changed)
+            if ($sectionType->getPublisher() === $this) {
+                $sectionType->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MediaGroup[]
+     */
+    public function getMediaGroups(): Collection
+    {
+        return $this->mediaGroups;
+    }
+
+    public function addMediaGroup(MediaGroup $mediaGroup): self
+    {
+        if (!$this->mediaGroups->contains($mediaGroup)) {
+            $this->mediaGroups[] = $mediaGroup;
+            $mediaGroup->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaGroup(MediaGroup $mediaGroup): self
+    {
+        if ($this->mediaGroups->contains($mediaGroup)) {
+            $this->mediaGroups->removeElement($mediaGroup);
+            // set the owning side to null (unless already changed)
+            if ($mediaGroup->getPublisher() === $this) {
+                $mediaGroup->setPublisher(null);
             }
         }
 

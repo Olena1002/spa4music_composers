@@ -17,11 +17,6 @@ class MediaGroup
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $publisher_id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $ref;
@@ -39,43 +34,36 @@ class MediaGroup
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_published;
+    private $isPublished;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $published_at;
+    private $publishedAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $deleted_at;
+    private $deletedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="mediaGroups")
+     */
+    private $publisher;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPublisherId(): ?int
-    {
-        return $this->publisher_id;
-    }
-
-    public function setPublisherId(int $publisher_id): self
-    {
-        $this->publisher_id = $publisher_id;
-
-        return $this;
     }
 
     public function getRef(): ?string
@@ -116,60 +104,72 @@ class MediaGroup
 
     public function getIsPublished(): ?bool
     {
-        return $this->is_published;
+        return $this->isPublished;
     }
 
-    public function setIsPublished(bool $is_published): self
+    public function setIsPublished(bool $isPublished): self
     {
-        $this->is_published = $is_published;
+        $this->isPublished = $isPublished;
 
         return $this;
     }
 
     public function getPublishedAt(): ?\DateTimeInterface
     {
-        return $this->published_at;
+        return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTimeInterface $published_at): self
+    public function setPublishedAt(\DateTimeInterface $publishedAt): self
     {
-        $this->published_at = $published_at;
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getDeletedAt(): ?\DateTimeInterface
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    public function setDeletedAt(\DateTimeInterface $deleted_at): self
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
     {
-        $this->deleted_at = $deleted_at;
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getPublisher(): ?User
+    {
+        return $this->publisher;
+    }
+
+    public function setPublisher(?User $publisher): self
+    {
+        $this->publisher = $publisher;
 
         return $this;
     }

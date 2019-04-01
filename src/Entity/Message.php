@@ -24,32 +24,37 @@ class Message
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $is_delivered;
+    private $isDelivered;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_received;
+    private $isReceived;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_replied;
+    private $isReplied;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $deleted_at;
+    private $deletedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -70,72 +75,84 @@ class Message
 
     public function getIsDelivered(): ?bool
     {
-        return $this->is_delivered;
+        return $this->isDelivered;
     }
 
-    public function setIsDelivered(bool $is_delivered): self
+    public function setIsDelivered(bool $isDelivered): self
     {
-        $this->is_delivered = $is_delivered;
+        $this->isDelivered = $isDelivered;
 
         return $this;
     }
 
     public function getIsReceived(): ?bool
     {
-        return $this->is_received;
+        return $this->isReceived;
     }
 
-    public function setIsReceived(?bool $is_received): self
+    public function setIsReceived(?bool $isReceived): self
     {
-        $this->is_received = $is_received;
+        $this->isReceived = $isReceived;
 
         return $this;
     }
 
     public function getIsReplied(): ?bool
     {
-        return $this->is_replied;
+        return $this->isReplied;
     }
 
-    public function setIsReplied(bool $is_replied): self
+    public function setIsReplied(bool $isReplied): self
     {
-        $this->is_replied = $is_replied;
+        $this->isReplied = $isReplied;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getDeletedAt(): ?\DateTimeInterface
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    public function setDeletedAt(\DateTimeInterface $deleted_at): self
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
     {
-        $this->deleted_at = $deleted_at;
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
