@@ -43,7 +43,7 @@ class Template
     private $ref;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=64)
      */
     private $name;
 
