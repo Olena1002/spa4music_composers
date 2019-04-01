@@ -6,12 +6,30 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProviderRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
+ * @UniqueEntity({"appKey, appSecret"})
  */
 class Provider
 {
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
+    /**
+     * Hook SoftDeleteable behavior
+     * updates deletedAt field
+     */
+    use SoftDeleteableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,6 +43,11 @@ class Provider
     private $name;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="provider")
+     */
+    private $users;
+
+    /**
      * @ORM\Column(type="string", length=150)
      */
     private $appKey;
@@ -35,29 +58,9 @@ class Provider
     private $appSecret;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
     private $isActive;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $deletedAt;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="provider")
-     */
-    private $users;
 
     public function __construct()
     {
@@ -137,18 +140,6 @@ class Provider
     public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?DateTimeInterface
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(DateTimeInterface $deletedAt): self
-    {
-        $this->deletedAt = $deletedAt;
 
         return $this;
     }

@@ -7,12 +7,29 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MediaTypeRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
+ * @UniqueEntity({"ref"})
  */
 class MediaType
 {
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
+    /**
+     * Hook SoftDeleteable behavior
+     * updates deletedAt field
+     */
+    use SoftDeleteableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -21,13 +38,13 @@ class MediaType
     private $id;
 
     /**
-     * @Gedmo\Slug(fields={"title"})
-     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=128)
      */
     private $ref;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=64)
      */
     private $name;
 
@@ -37,31 +54,9 @@ class MediaType
     private $description;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="type")
      */
-    private $isPublished;
-
-    /**
-     * @Gedmo\Timestampable()
-     * @ORM\Column(type="datetime")
-     */
-    private $publishedAt;
-
-    /**@Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @Gedmo\Timestampable(on="uptade")
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $deletedAt;
+    private $media;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="mediaTypes")
@@ -69,14 +64,15 @@ class MediaType
     private $publisher;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="type")
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
-    private $media;
+    private $isPublished;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"name", "description", "isPublished"})
      */
-    private $title;
+    private $publishedAt;
 
     public function __construct()
     {
@@ -148,42 +144,6 @@ class MediaType
         return $this;
     }
 
-    public function getCreatedAt(): ?DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?DateTimeInterface
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(DateTimeInterface $deletedAt): self
-    {
-        $this->deletedAt = $deletedAt;
-
-        return $this;
-    }
-
     public function getPublisher(): ?User
     {
         return $this->publisher;
@@ -223,18 +183,6 @@ class MediaType
                 $medium->setType(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
 
         return $this;
     }

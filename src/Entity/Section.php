@@ -7,14 +7,29 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SectionRepository")
- * @UniqueEntity({"ref", "position"})
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
+ * @UniqueEntity({"ref"})
  */
 class Section
 {
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
+    /**
+     * Hook SoftDeleteable behavior
+     * updates deletedAt field
+     */
+    use SoftDeleteableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -23,10 +38,46 @@ class Section
     private $id;
 
     /**
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(type="string", length=128)
+     */
+    private $ref;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $content = [];
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $customData = [];
+
+    /**
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $metadata;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Section", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="parent_id", nullable=true, referencedColumnName="id")
      */
     private $parent;
+
+    /**
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $position;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\SectionType", inversedBy="sections")
+     */
+    private $sectionTypes;
 
     /**
      * @var User
@@ -36,74 +87,20 @@ class Section
     private $publisher;
 
     /**
-     * @Gedmo\Slug(fields={"title"})
-     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
-     */
-    private $ref;
-
-    /**
-     * @ORM\Column(type="integer", nullable=false, unique=true, options={"default" : 0})
-     */
-    private $position;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
-     * @todo: Maybe is loss-making prop.
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
     private $isParent;
 
     /**
-     * @ORM\Column(type="array", nullable=false)
-     */
-    private $content = [];
-
-    /**
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $metadata;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
     private $isPublished;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $customData = [];
-
-    /**
-     * @Gedmo\Timestampable()
      * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"title", "content", "customData", "isPublished"})
      */
     private $publishedAt;
-
-    /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $deletedAt;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\SectionType", inversedBy="sections")
-     */
-    private $sectionTypes;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
 
     public function __construct()
     {
@@ -231,42 +228,6 @@ class Section
     public function setPublishedAt(DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?DateTimeInterface
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(DateTimeInterface $deletedAt): self
-    {
-        $this->deletedAt = $deletedAt;
 
         return $this;
     }
