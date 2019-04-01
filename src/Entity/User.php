@@ -6,13 +6,31 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
+ * @UniqueEntity({"email"})
  */
 class User
 {
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
+    /**
+     * Hook SoftDeleteable behavior
+     * updates deletedAt field
+     */
+    use SoftDeleteableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -26,7 +44,7 @@ class User
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=60, nullable=false)
+     * @ORM\Column(type="string", length=64)
      */
     private $username;
 
@@ -36,14 +54,9 @@ class User
     private $fullName;
 
     /**
-     * @ORM\Column(name="is_activated", type="boolean", options={"default" : false})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users")
      */
-    private $isActivated;
-
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $userAgent = [];
+    private $provider;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -51,24 +64,9 @@ class User
     private $roles;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $lastLogin;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $deletedAt;
+    private $userAgent = [];
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Section", mappedBy="publisher")
@@ -79,11 +77,6 @@ class User
      * @ORM\OneToMany(targetEntity="App\Entity\MediaType", mappedBy="publisher")
      */
     private $mediaTypes;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user")
-     */
-    private $messages;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="publisher")
@@ -101,9 +94,20 @@ class User
     private $mediaGroups;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users")
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user")
      */
-    private $provider;
+    private $messages;
+
+    /**
+     * @ORM\Column(name="is_activated", type="boolean", options={"default" : false})
+     */
+    private $isActivated;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
 
     public function __construct()
     {
