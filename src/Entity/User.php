@@ -101,7 +101,7 @@ class User
     private $mediaGroups;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="usersId")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users")
      */
     private $provider;
 
