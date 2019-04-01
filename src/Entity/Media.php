@@ -19,17 +19,17 @@ class Media
     /**
      * @ORM\Column(type="integer")
      */
-    private $publisher_id;
+    private $publisherId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $type_id;
+    private $typeId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $group_id;
+    private $groupId;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -49,7 +49,7 @@ class Media
     /**
      * @ORM\Column(type="array")
      */
-    private $content_data = [];
+    private $contentData = [];
 
     /**
      * @ORM\Column(type="array")
@@ -59,7 +59,7 @@ class Media
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_published;
+    private $isPublished;
 
     /**
      * @ORM\Column(type="datetime")

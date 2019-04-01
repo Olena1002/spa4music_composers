@@ -41,7 +41,7 @@ class User
     private $fullName;
 
     /**
-     * @ORM\Column(name="is_activated", type="boolean", default=0)
+     * @ORM\Column(name="is_activated", type="boolean", options={"default" : false})
      */
     private $isActivated;
 
@@ -58,30 +58,25 @@ class User
     /**
      * @ORM\Column(type="datetime")
      */
-    private $last_login;
+    private $lastLogin;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $deleted_at;
+    private $deletedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users_ids")
-     */
-    private $provider_ids;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Section", mappedBy="publisher_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Section", mappedBy="publisher")
      */
     private $sections;
 
@@ -128,36 +123,36 @@ class User
 
     public function getFullName(): ?string
     {
-        return $this->full_name;
+        return $this->fullName;
     }
 
-    public function setFullName(?string $full_name): self
+    public function setFullName(?string $fullName): self
     {
-        $this->full_name = $full_name;
+        $this->fullName = $fullName;
 
         return $this;
     }
 
     public function getIsActivated(): ?bool
     {
-        return $this->is_activated;
+        return $this->isActivated;
     }
 
-    public function setIsActivated(bool $is_activated): self
+    public function setIsActivated(bool $isActivated): self
     {
-        $this->is_activated = $is_activated;
+        $this->isActivated = $isActivated;
 
         return $this;
     }
 
     public function getUserAgent(): ?array
     {
-        return $this->user_agent;
+        return $this->userAgent;
     }
 
-    public function setUserAgent(array $user_agent): self
+    public function setUserAgent(array $userAgent): self
     {
-        $this->user_agent = $user_agent;
+        $this->userAgent = $userAgent;
 
         return $this;
     }
@@ -176,60 +171,48 @@ class User
 
     public function getLastLogin(): ?\DateTimeInterface
     {
-        return $this->last_login;
+        return $this->lastLogin;
     }
 
-    public function setLastLogin(\DateTimeInterface $last_login): self
+    public function setLastLogin(\DateTimeInterface $lastLogin): self
     {
-        $this->last_login = $last_login;
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getDeletedAt(): ?\DateTimeInterface
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    public function setDeletedAt(\DateTimeInterface $deleted_at): self
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
     {
-        $this->deleted_at = $deleted_at;
-
-        return $this;
-    }
-
-    public function getProviderIds(): ?Provider
-    {
-        return $this->provider_ids;
-    }
-
-    public function setProviderIds(?Provider $provider_ids): self
-    {
-        $this->provider_ids = $provider_ids;
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
@@ -246,7 +229,7 @@ class User
     {
         if (!$this->sections->contains($section)) {
             $this->sections[] = $section;
-            $section->setPublisherId($this);
+            $section->setPublisher($this);
         }
 
         return $this;
@@ -257,8 +240,8 @@ class User
         if ($this->sections->contains($section)) {
             $this->sections->removeElement($section);
             // set the owning side to null (unless already changed)
-            if ($section->getPublisherId() === $this) {
-                $section->setPublisherId(null);
+            if ($section->getPublisher() === $this) {
+                $section->setPublisher(null);
             }
         }
 
