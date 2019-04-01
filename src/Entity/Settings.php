@@ -19,67 +19,67 @@ class Settings
     /**
      * @ORM\Column(name="custom_head", type="text", nullable=true)
      */
-    private $custom_head;
+    private $customHead;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $custom_styles;
+    private $customStyles;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $custom_scripts;
+    private $customScripts;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $res_title;
+    private $resTitle;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $res_description;
+    private $resDescription;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $res_logo;
+    private $resLogo;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
      */
-    private $res_logo_text;
+    private $resLogoText;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $res_data;
+    private $resData;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $res_metadata = [];
+    private $resMetadata = [];
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $owner_data = [];
+    private $ownerData = [];
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $contacts_data = [];
+    private $contactsData = [];
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $res_microdata = [];
+    private $resMicrodata = [];
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $allow_for = [];
+    private $allowFor = [];
 
     /**
      * @ORM\Column(type="string", length=25)
@@ -94,7 +94,7 @@ class Settings
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_live;
+    private $isLive;
 
     public function getId(): ?int
     {
@@ -103,156 +103,156 @@ class Settings
 
     public function getCustomHead(): ?string
     {
-        return $this->custom_head;
+        return $this->customHead;
     }
 
-    public function setCustomHead(?string $custom_head): self
+    public function setCustomHead(?string $customHead): self
     {
-        $this->custom_head = $custom_head;
+        $this->customHead = $customHead;
 
         return $this;
     }
 
     public function getCustomStyles(): ?string
     {
-        return $this->custom_styles;
+        return $this->customStyles;
     }
 
-    public function setCustomStyles(?string $custom_styles): self
+    public function setCustomStyles(?string $customStyles): self
     {
-        $this->custom_styles = $custom_styles;
+        $this->customStyles = $customStyles;
 
         return $this;
     }
 
     public function getCustomScripts(): ?string
     {
-        return $this->custom_scripts;
+        return $this->customScripts;
     }
 
-    public function setCustomScripts(?string $custom_scripts): self
+    public function setCustomScripts(?string $customScripts): self
     {
-        $this->custom_scripts = $custom_scripts;
+        $this->customScripts = $customScripts;
 
         return $this;
     }
 
     public function getResTitle(): ?string
     {
-        return $this->res_title;
+        return $this->resTitle;
     }
 
-    public function setResTitle(?string $res_title): self
+    public function setResTitle(?string $resTitle): self
     {
-        $this->res_title = $res_title;
+        $this->resTitle = $resTitle;
 
         return $this;
     }
 
     public function getResDescription(): ?string
     {
-        return $this->res_description;
+        return $this->resDescription;
     }
 
-    public function setResDescription(?string $res_description): self
+    public function setResDescription(?string $resDescription): self
     {
-        $this->res_description = $res_description;
+        $this->resDescription = $resDescription;
 
         return $this;
     }
 
     public function getResLogo(): ?string
     {
-        return $this->res_logo;
+        return $this->resLogo;
     }
 
-    public function setResLogo(?string $res_logo): self
+    public function setResLogo(?string $resLogo): self
     {
-        $this->res_logo = $res_logo;
+        $this->resLogo = $resLogo;
 
         return $this;
     }
 
     public function getResLogoText(): ?string
     {
-        return $this->res_logo_text;
+        return $this->resLogoText;
     }
 
-    public function setResLogoText(?string $res_logo_text): self
+    public function setResLogoText(?string $resLogoText): self
     {
-        $this->res_logo_text = $res_logo_text;
+        $this->resLogoText = $resLogoText;
 
         return $this;
     }
 
     public function getResData(): ?string
     {
-        return $this->res_data;
+        return $this->resData;
     }
 
-    public function setResData(?string $res_data): self
+    public function setResData(?string $resData): self
     {
-        $this->res_data = $res_data;
+        $this->resData = $resData;
 
         return $this;
     }
 
     public function getResMetadata(): ?array
     {
-        return $this->res_metadata;
+        return $this->resMetadata;
     }
 
-    public function setResMetadata(?array $res_metadata): self
+    public function setResMetadata(?array $resMetadata): self
     {
-        $this->res_metadata = $res_metadata;
+        $this->resMetadata = $resMetadata;
 
         return $this;
     }
 
     public function getOwnerData(): ?array
     {
-        return $this->owner_data;
+        return $this->ownerData;
     }
 
-    public function setOwnerData(?array $owner_data): self
+    public function setOwnerData(?array $ownerData): self
     {
-        $this->owner_data = $owner_data;
+        $this->ownerData = $ownerData;
 
         return $this;
     }
 
     public function getContactsData(): ?array
     {
-        return $this->contacts_data;
+        return $this->contactsData;
     }
 
-    public function setContactsData(?array $contacts_data): self
+    public function setContactsData(?array $contactsData): self
     {
-        $this->contacts_data = $contacts_data;
+        $this->contactsData = $contactsData;
 
         return $this;
     }
 
     public function getResMicrodata(): ?array
     {
-        return $this->res_microdata;
+        return $this->resMicrodata;
     }
 
-    public function setResMicrodata(?array $res_microdata): self
+    public function setResMicrodata(?array $resMicrodata): self
     {
-        $this->res_microdata = $res_microdata;
+        $this->resMicrodata = $resMicrodata;
 
         return $this;
     }
 
     public function getAllowFor(): ?array
     {
-        return $this->allow_for;
+        return $this->allowFor;
     }
 
-    public function setAllowFor(?array $allow_for): self
+    public function setAllowFor(?array $allowFor): self
     {
-        $this->allow_for = $allow_for;
+        $this->allowFor = $allowFor;
 
         return $this;
     }
@@ -283,12 +283,12 @@ class Settings
 
     public function getIsLive(): ?bool
     {
-        return $this->is_live;
+        return $this->isLive;
     }
 
-    public function setIsLive(bool $is_live): self
+    public function setIsLive(bool $isLive): self
     {
-        $this->is_live = $is_live;
+        $this->isLive = $isLive;
 
         return $this;
     }

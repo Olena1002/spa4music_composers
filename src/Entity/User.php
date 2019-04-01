@@ -20,34 +20,29 @@ class User
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users")
-     */
-    private $provider;
-
-    /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=60, nullable=false)
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(name="full_name", type="string", length=50, nullable=true)
      */
-    private $full_name;
+    private $fullName;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="is_activated", type="boolean", options={"default" : false})
      */
-    private $is_activated;
+    private $isActivated;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $user_agent = [];
+    private $userAgent = [];
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -57,48 +52,66 @@ class User
     /**
      * @ORM\Column(type="datetime")
      */
-    private $last_login;
+    private $lastLogin;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $deleted_at;
+    private $deletedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="users_ids")
-     */
-    private $provider_ids;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Section", mappedBy="publisher_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Section", mappedBy="publisher")
      */
     private $sections;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MediaType", mappedBy="publisher")
+     */
+    private $mediaTypes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user")
+     */
+    private $messages;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="publisher")
+     */
+    private $media;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SectionType", mappedBy="publisher")
+     */
+    private $sectionTypes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MediaGroup", mappedBy="publisher")
+     */
+    private $mediaGroups;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Provider", inversedBy="usersId")
+     */
+    private $provider;
 
     public function __construct()
     {
         $this->sections = new ArrayCollection();
-    }
-
-    public function getProvider(): ?Provider
-    {
-        return $this->provider;
-    }
-
-    public function setProvider(?Provider $provider): self
-    {
-        $this->provider = $provider;
-
-        return $this;
+        $this->mediaTypes = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->media = new ArrayCollection();
+        $this->sectionTypes = new ArrayCollection();
+        $this->mediaGroups = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -127,36 +140,36 @@ class User
 
     public function getFullName(): ?string
     {
-        return $this->full_name;
+        return $this->fullName;
     }
 
-    public function setFullName(?string $full_name): self
+    public function setFullName(?string $fullName): self
     {
-        $this->full_name = $full_name;
+        $this->fullName = $fullName;
 
         return $this;
     }
 
     public function getIsActivated(): ?bool
     {
-        return $this->is_activated;
+        return $this->isActivated;
     }
 
-    public function setIsActivated(bool $is_activated): self
+    public function setIsActivated(bool $isActivated): self
     {
-        $this->is_activated = $is_activated;
+        $this->isActivated = $isActivated;
 
         return $this;
     }
 
     public function getUserAgent(): ?array
     {
-        return $this->user_agent;
+        return $this->userAgent;
     }
 
-    public function setUserAgent(array $user_agent): self
+    public function setUserAgent(array $userAgent): self
     {
-        $this->user_agent = $user_agent;
+        $this->userAgent = $userAgent;
 
         return $this;
     }
@@ -175,60 +188,48 @@ class User
 
     public function getLastLogin(): ?\DateTimeInterface
     {
-        return $this->last_login;
+        return $this->lastLogin;
     }
 
-    public function setLastLogin(\DateTimeInterface $last_login): self
+    public function setLastLogin(\DateTimeInterface $lastLogin): self
     {
-        $this->last_login = $last_login;
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getDeletedAt(): ?\DateTimeInterface
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    public function setDeletedAt(\DateTimeInterface $deleted_at): self
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
     {
-        $this->deleted_at = $deleted_at;
-
-        return $this;
-    }
-
-    public function getProviderIds(): ?Provider
-    {
-        return $this->provider_ids;
-    }
-
-    public function setProviderIds(?Provider $provider_ids): self
-    {
-        $this->provider_ids = $provider_ids;
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
@@ -245,7 +246,7 @@ class User
     {
         if (!$this->sections->contains($section)) {
             $this->sections[] = $section;
-            $section->setPublisherId($this);
+            $section->setPublisher($this);
         }
 
         return $this;
@@ -256,10 +257,177 @@ class User
         if ($this->sections->contains($section)) {
             $this->sections->removeElement($section);
             // set the owning side to null (unless already changed)
-            if ($section->getPublisherId() === $this) {
-                $section->setPublisherId(null);
+            if ($section->getPublisher() === $this) {
+                $section->setPublisher(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MediaType[]
+     */
+    public function getMediaTypes(): Collection
+    {
+        return $this->mediaTypes;
+    }
+
+    public function addMediaType(MediaType $mediaType): self
+    {
+        if (!$this->mediaTypes->contains($mediaType)) {
+            $this->mediaTypes[] = $mediaType;
+            $mediaType->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaType(MediaType $mediaType): self
+    {
+        if ($this->mediaTypes->contains($mediaType)) {
+            $this->mediaTypes->removeElement($mediaType);
+            // set the owning side to null (unless already changed)
+            if ($mediaType->getPublisher() === $this) {
+                $mediaType->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedium(Media $medium): self
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media[] = $medium;
+            $medium->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedium(Media $medium): self
+    {
+        if ($this->media->contains($medium)) {
+            $this->media->removeElement($medium);
+            // set the owning side to null (unless already changed)
+            if ($medium->getPublisher() === $this) {
+                $medium->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SectionType[]
+     */
+    public function getSectionTypes(): Collection
+    {
+        return $this->sectionTypes;
+    }
+
+    public function addSectionType(SectionType $sectionType): self
+    {
+        if (!$this->sectionTypes->contains($sectionType)) {
+            $this->sectionTypes[] = $sectionType;
+            $sectionType->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSectionType(SectionType $sectionType): self
+    {
+        if ($this->sectionTypes->contains($sectionType)) {
+            $this->sectionTypes->removeElement($sectionType);
+            // set the owning side to null (unless already changed)
+            if ($sectionType->getPublisher() === $this) {
+                $sectionType->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MediaGroup[]
+     */
+    public function getMediaGroups(): Collection
+    {
+        return $this->mediaGroups;
+    }
+
+    public function addMediaGroup(MediaGroup $mediaGroup): self
+    {
+        if (!$this->mediaGroups->contains($mediaGroup)) {
+            $this->mediaGroups[] = $mediaGroup;
+            $mediaGroup->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaGroup(MediaGroup $mediaGroup): self
+    {
+        if ($this->mediaGroups->contains($mediaGroup)) {
+            $this->mediaGroups->removeElement($mediaGroup);
+            // set the owning side to null (unless already changed)
+            if ($mediaGroup->getPublisher() === $this) {
+                $mediaGroup->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProvider(): ?Provider
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(?Provider $provider): self
+    {
+        $this->provider = $provider;
 
         return $this;
     }

@@ -26,47 +26,41 @@ class Provider
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $app_key;
+    private $appKey;
 
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $app_secret;
+    private $appSecret;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_active;
+    private $isActive;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $deleted_at;
+    private $deletedAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="provider")
      */
-    private $users;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="provider_ids")
-     */
-    private $users_ids;
+    private $usersId;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->users_ids = new ArrayCollection();
+        $this->usersId = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,72 +82,72 @@ class Provider
 
     public function getAppKey(): ?string
     {
-        return $this->app_key;
+        return $this->appKey;
     }
 
-    public function setAppKey(string $app_key): self
+    public function setAppKey(string $appKey): self
     {
-        $this->app_key = $app_key;
+        $this->appKey = $appKey;
 
         return $this;
     }
 
     public function getAppSecret(): ?string
     {
-        return $this->app_secret;
+        return $this->appSecret;
     }
 
-    public function setAppSecret(string $app_secret): self
+    public function setAppSecret(string $appSecret): self
     {
-        $this->app_secret = $app_secret;
+        $this->appSecret = $appSecret;
 
         return $this;
     }
 
     public function getIsActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(bool $is_active): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->is_active = $is_active;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getDeletedAt(): ?\DateTimeInterface
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    public function setDeletedAt(\DateTimeInterface $deleted_at): self
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
     {
-        $this->deleted_at = $deleted_at;
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
@@ -161,47 +155,16 @@ class Provider
     /**
      * @return Collection|User[]
      */
-    public function getUsers(): Collection
+    public function getUsersId(): Collection
     {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setProvider($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getProvider() === $this) {
-                $user->setProvider(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsersIds(): Collection
-    {
-        return $this->users_ids;
+        return $this->usersId;
     }
 
     public function addUsersId(User $usersId): self
     {
-        if (!$this->users_ids->contains($usersId)) {
-            $this->users_ids[] = $usersId;
-            $usersId->setProviderIds($this);
+        if (!$this->usersId->contains($usersId)) {
+            $this->usersId[] = $usersId;
+            $usersId->setProvider($this);
         }
 
         return $this;
@@ -209,11 +172,11 @@ class Provider
 
     public function removeUsersId(User $usersId): self
     {
-        if ($this->users_ids->contains($usersId)) {
-            $this->users_ids->removeElement($usersId);
+        if ($this->usersId->contains($usersId)) {
+            $this->usersId->removeElement($usersId);
             // set the owning side to null (unless already changed)
-            if ($usersId->getProviderIds() === $this) {
-                $usersId->setProviderIds(null);
+            if ($usersId->getProvider() === $this) {
+                $usersId->setProvider(null);
             }
         }
 

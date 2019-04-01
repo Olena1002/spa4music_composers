@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SectionRepository")
+ * @UniqueEntity({"ref", "position"})
  */
 class Section
 {
@@ -20,32 +22,35 @@ class Section
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Section", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="parent_id", nullable=true, referencedColumnName="id")
      */
-    private $parent_id;
+    private $parent;
 
     /**
+     * @var User
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sections")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="publisher_id", referencedColumnName="id")
      */
-    private $publisher_id;
+    private $publisher;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
     private $ref;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false, unique=true, options={"default" : 0})
      */
     private $position;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
+     * @todo: Maybe is loss-making prop.
      */
     private $isParent;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=false)
      */
     private $content = [];
 
@@ -55,7 +60,7 @@ class Section
     private $metadata;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
      */
     private $isPublished;
 
@@ -65,7 +70,7 @@ class Section
     private $customData = [];
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
 
@@ -80,7 +85,7 @@ class Section
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $deletedAt;
 
@@ -99,26 +104,26 @@ class Section
         return $this->id;
     }
 
-    public function getParentId(): ?self
+    public function getParent(): ?Section
     {
-        return $this->parent_id;
+        return $this->parent;
     }
 
-    public function setParentId(?self $parent_id): self
+    public function setParent(?Section $parent): Section
     {
-        $this->parent_id = $parent_id;
+        $this->parent = $parent;
 
         return $this;
     }
 
-    public function getPublisherId(): ?User
+    public function getPublisher(): ?User
     {
-        return $this->publisher_id;
+        return $this->publisher;
     }
 
-    public function setPublisherId(?User $publisher_id): self
+    public function setPublisher(?User $publisher): self
     {
-        $this->publisher_id = $publisher_id;
+        $this->publisher = $publisher;
 
         return $this;
     }
@@ -183,12 +188,12 @@ class Section
         return $this;
     }
 
-    public function getIsPublished(): ?bool
+    public function getPublished(): ?bool
     {
         return $this->isPublished;
     }
 
-    public function setIsPublished(bool $isPublished): self
+    public function setPublished(bool $isPublished): self
     {
         $this->isPublished = $isPublished;
 
