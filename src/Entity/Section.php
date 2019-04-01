@@ -49,12 +49,12 @@ class Section
     private $title;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
     private $content = [];
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
     private $customData = [];
 
