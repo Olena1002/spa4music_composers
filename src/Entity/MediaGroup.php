@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -52,6 +54,11 @@ class MediaGroup
     private $description;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Media", mappedBy="mediaGroups")
+     */
+    private $mediaFiles;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="mediaGroups")
      */
     private $publisher;
@@ -66,6 +73,11 @@ class MediaGroup
      * @Gedmo\Timestampable(on="change", field={"title", "description", "isPublished"})
      */
     private $publishedAt;
+
+    public function __construct()
+    {
+        $this->mediaFiles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -140,6 +152,34 @@ class MediaGroup
     public function setPublisher(?User $publisher): self
     {
         $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMediaFiles(): Collection
+    {
+        return $this->mediaFiles;
+    }
+
+    public function addMediaFile(Media $mediaFile): self
+    {
+        if (!$this->mediaFiles->contains($mediaFile)) {
+            $this->mediaFiles[] = $mediaFile;
+            $mediaFile->addMediaGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaFile(Media $mediaFile): self
+    {
+        if ($this->mediaFiles->contains($mediaFile)) {
+            $this->mediaFiles->removeElement($mediaFile);
+            $mediaFile->removeMediaGroup($this);
+        }
 
         return $this;
     }

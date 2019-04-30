@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -63,19 +65,20 @@ class Media
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\MediaType", inversedBy="media")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
-    private $type;
+    private $mediaType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="media")
+     * @ORM\ManyToMany(targetEntity="App\Entity\MediaGroup", inversedBy="mediaFiles")
+     */
+    private $mediaGroups;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="mediaFiles")
+     * @ORM\JoinColumn(name="publisher_id", referencedColumnName="id")
      */
     private $publisher;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @todo: Media Group relation
-     */
-    private $group;
 
     /**
      * @ORM\Column(type="boolean", options={"default" : false})
@@ -88,21 +91,14 @@ class Media
      */
     private $publishedAt;
 
+    public function __construct()
+    {
+        $this->mediaGroups = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getGroup(): ?int
-    {
-        return $this->group;
-    }
-
-    public function setGroup(int $group): self
-    {
-        $this->group = $group;
-
-        return $this;
     }
 
     public function getRef(): ?string
@@ -189,18 +185,6 @@ class Media
         return $this;
     }
 
-    public function getType(): ?MediaType
-    {
-        return $this->type;
-    }
-
-    public function setType(?MediaType $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function getPublisher(): ?User
     {
         return $this->publisher;
@@ -209,6 +193,44 @@ class Media
     public function setPublisher(?User $publisher): self
     {
         $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MediaGroup[]
+     */
+    public function getMediaGroups(): Collection
+    {
+        return $this->mediaGroups;
+    }
+
+    public function addMediaGroup(MediaGroup $mediaGroup): self
+    {
+        if (!$this->mediaGroups->contains($mediaGroup)) {
+            $this->mediaGroups[] = $mediaGroup;
+        }
+
+        return $this;
+    }
+
+    public function removeMediaGroup(MediaGroup $mediaGroup): self
+    {
+        if ($this->mediaGroups->contains($mediaGroup)) {
+            $this->mediaGroups->removeElement($mediaGroup);
+        }
+
+        return $this;
+    }
+
+    public function getMediaType(): ?MediaType
+    {
+        return $this->mediaType;
+    }
+
+    public function setMediaType(?MediaType $mediaType): self
+    {
+        $this->mediaType = $mediaType;
 
         return $this;
     }
