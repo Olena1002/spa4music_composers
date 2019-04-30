@@ -81,7 +81,7 @@ class User
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="publisher")
      */
-    private $media;
+    private $mediaFiles;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SectionType", mappedBy="publisher")
@@ -114,7 +114,7 @@ class User
         $this->sections = new ArrayCollection();
         $this->mediaTypes = new ArrayCollection();
         $this->messages = new ArrayCollection();
-        $this->media = new ArrayCollection();
+        $this->mediaFiles = new ArrayCollection();
         $this->sectionTypes = new ArrayCollection();
         $this->mediaGroups = new ArrayCollection();
     }
@@ -333,37 +333,6 @@ class User
     }
 
     /**
-     * @return Collection|Media[]
-     */
-    public function getMedia(): Collection
-    {
-        return $this->media;
-    }
-
-    public function addMedium(Media $medium): self
-    {
-        if (!$this->media->contains($medium)) {
-            $this->media[] = $medium;
-            $medium->setPublisher($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMedium(Media $medium): self
-    {
-        if ($this->media->contains($medium)) {
-            $this->media->removeElement($medium);
-            // set the owning side to null (unless already changed)
-            if ($medium->getPublisher() === $this) {
-                $medium->setPublisher(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|SectionType[]
      */
     public function getSectionTypes(): Collection
@@ -433,6 +402,42 @@ class User
     public function setProvider(?Provider $provider): self
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMediaFiles(): Collection
+    {
+        return $this->mediaFiles;
+    }
+
+    public function addMediaFile(Media $mediaFile): self
+    {
+        if (!$this->mediaFiles->contains($mediaFile)) {
+            $this->mediaFiles[] = $mediaFile;
+            $mediaFile->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaFile(Media $mediaFile): self
+    {
+        if ($this->mediaFiles->contains($mediaFile)) {
+            $this->mediaFiles->removeElement($mediaFile);
+            // set the owning side to null (unless already changed)
+            if ($mediaFile->getPublisher() === $this) {
+                $mediaFile->setPublisher(null);
+            }
+        }
 
         return $this;
     }

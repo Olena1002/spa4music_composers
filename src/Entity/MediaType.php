@@ -54,7 +54,7 @@ class MediaType
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="type")
+     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="mediaType")
      */
     private $media;
 
@@ -168,7 +168,7 @@ class MediaType
     {
         if (!$this->media->contains($medium)) {
             $this->media[] = $medium;
-            $medium->setType($this);
+            $medium->setMediaType($this);
         }
 
         return $this;
@@ -179,8 +179,8 @@ class MediaType
         if ($this->media->contains($medium)) {
             $this->media->removeElement($medium);
             // set the owning side to null (unless already changed)
-            if ($medium->getType() === $this) {
-                $medium->setType(null);
+            if ($medium->getMediaType() === $this) {
+                $medium->setMediaType(null);
             }
         }
 
