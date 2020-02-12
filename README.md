@@ -1,3 +1,1 @@
-# spa4music_composers
-
-Symfony Flex
+# PROJECT NO LONGER SUPPORTED
